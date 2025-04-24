@@ -107,39 +107,6 @@ jobs:
         name: CursorFreeVIP_${{ env.VERSION }}_windows.exe
         path: dist/CursorFreeVIP_${{ env.VERSION }}_windows.exe
 
-  build-macos-arm64:
-    needs: [determine-version, create-tag]
-    runs-on: macos-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    
-    - name: Set version
-      shell: bash
-      run: echo "VERSION=${{ needs.determine-version.outputs.version }}" >> $GITHUB_ENV
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pyinstaller
-        pip install -r requirements.txt
-        
-    - name: Build MacOS ARM executable
-      run: |
-        pyinstaller build.spec
-        mv "dist/CursorFreeVIP_${{ env.VERSION }}_mac" "dist/CursorFreeVIP_${{ env.VERSION }}_mac_arm64"
-
-    - name: Upload MacOS ARM artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: CursorFreeVIP_${{ env.VERSION }}_mac_arm64
-        path: dist/CursorFreeVIP_${{ env.VERSION }}_mac_arm64
-
   build-linux-x64:
     needs: [determine-version, create-tag]
     runs-on: ubuntu-latest
@@ -153,17 +120,13 @@ jobs:
     
     - name: Build in Ubuntu 20.04 Docker container
       run: |
-        docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:20.04 bash -c "
+        docker run --rm -v ${{ github.workspace }}:/app -w /app python:3.10-slim-bullseye bash -c "
           apt-get update && \
-          apt-get install -y software-properties-common && \
-          add-apt-repository ppa:deadsnakes/ppa && \
-          apt-get update && \
-          apt-get install -y python3.10 python3.10-dev python3.10-distutils curl build-essential binutils && \
-          curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
-          python3.10 -m pip install --upgrade pip && \
-          python3.10 -m pip install pyinstaller && \
-          python3.10 -m pip install -r requirements.txt && \
-          python3.10 -m PyInstaller build.spec && \
+          apt-get install -y build-essential binutils && \
+          pip install --upgrade pip && \
+          pip install pyinstaller && \
+          pip install -r requirements.txt && \
+          python -m PyInstaller build.spec && \
           mv \"/app/dist/CursorFreeVIP_${VERSION}_linux\" \"/app/dist/CursorFreeVIP_${VERSION}_linux_x64\"
         "
         echo "Contents of dist directory:"
@@ -174,41 +137,6 @@ jobs:
       with:
         name: CursorFreeVIP_${{ env.VERSION }}_linux_x64
         path: dist/CursorFreeVIP_${{ env.VERSION }}_linux_x64
-
-  build-linux-arm64:
-    needs: [determine-version, create-tag]
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-      with:
-        platforms: arm64
-    
-    - name: Set version
-      shell: bash
-      run: echo "VERSION=${{ needs.determine-version.outputs.version }}" >> $GITHUB_ENV
-    
-    - name: Build in ARM64 Docker container
-      run: |
-        docker run --rm --platform linux/arm64 -v ${{ github.workspace }}:/app -w /app arm64v8/python:3.10-slim bash -c "
-          apt-get update && apt-get install -y build-essential
-          pip install --upgrade pip
-          pip install pyinstaller
-          pip install -r requirements.txt
-          python -m PyInstaller build.spec
-          mv /app/dist/CursorFreeVIP_${{ env.VERSION }}_linux /app/dist/CursorFreeVIP_${{ env.VERSION }}_linux_arm64
-        "
-        echo "Contents of dist directory:"
-        ls -la dist/
-        
-    - name: Upload Linux ARM64 artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: CursorFreeVIP_${{ env.VERSION }}_linux_arm64
-        path: dist/CursorFreeVIP_${{ env.VERSION }}_linux_arm64
 
   build-macos-intel:
     needs: [determine-version, create-tag]
