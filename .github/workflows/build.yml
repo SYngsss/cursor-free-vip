@@ -142,7 +142,7 @@ jobs:
 
   build-linux-x64:
     needs: [determine-version, create-tag]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
     - uses: actions/checkout@v2
@@ -155,10 +155,10 @@ jobs:
       run: |
         docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:20.04 bash -c "
           apt-get update && \
-          apt-get install -y software-properties-common && \
+          apt-get install -y software-properties-common binutils && \
           add-apt-repository ppa:deadsnakes/ppa && \
           apt-get update && \
-          apt-get install -y python3.10 python3.10-dev python3.10-distutils curl && \
+          apt-get install -y python3.10 python3.10-dev python3.10-distutils curl binutils build-essential && \
           curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
           python3.10 -m pip install --upgrade pip && \
           python3.10 -m pip install pyinstaller && \
