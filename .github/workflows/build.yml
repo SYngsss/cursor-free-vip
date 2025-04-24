@@ -142,7 +142,7 @@ jobs:
 
   build-linux-x64:
     needs: [determine-version, create-tag]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
     - uses: actions/checkout@v2
