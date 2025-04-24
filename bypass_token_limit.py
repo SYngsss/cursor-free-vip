@@ -58,7 +58,7 @@ def get_workbench_cursor_path(translator=None) -> str:
             "main": "out\\vs\\workbench\\workbench.desktop.main.js"
         },
         "Linux": {
-            "bases": ["/opt/Cursor/resources/app", "/usr/share/cursor/resources/app", "/usr/lib/cursor/app/"],
+            "bases": ["/opt/Cursor/resources/app", "/usr/share/cursor/resources/app", "/usr/lib/cursor/app/", "/home/yupan/下载/squashfs-root/usr/share/cursor/resources/app"],
             "main": "out/vs/workbench/workbench.desktop.main.js"
         }
     }

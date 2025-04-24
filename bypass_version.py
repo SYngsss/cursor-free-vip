@@ -58,7 +58,8 @@ def get_product_json_path(translator=None):
         possible_paths = [
             "/opt/Cursor/resources/app/product.json",
             "/usr/share/cursor/resources/app/product.json",
-            "/usr/lib/cursor/app/product.json"
+            "/usr/lib/cursor/app/product.json",
+            "/home/yupan/下载/squashfs-root/usr/share/cursor/resources/app/product.json"
         ]
         
         # Add extracted AppImage paths
