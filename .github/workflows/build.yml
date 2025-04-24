@@ -142,7 +142,7 @@ jobs:
 
   build-linux-x64:
     needs: [determine-version, create-tag]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
@@ -151,20 +151,20 @@ jobs:
       shell: bash
       run: echo "VERSION=${{ needs.determine-version.outputs.version }}" >> $GITHUB_ENV
     
-    - name: Build in Docker container
+    - name: Build in Ubuntu 20.04 Docker container
       run: |
         docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:20.04 bash -c "
           apt-get update && \
-          apt-get install -y software-properties-common binutils && \
+          apt-get install -y software-properties-common && \
           add-apt-repository ppa:deadsnakes/ppa && \
           apt-get update && \
-          apt-get install -y python3.10 python3.10-dev python3.10-distutils curl binutils build-essential && \
+          apt-get install -y python3.10 python3.10-dev python3.10-distutils curl build-essential binutils && \
           curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
           python3.10 -m pip install --upgrade pip && \
           python3.10 -m pip install pyinstaller && \
           python3.10 -m pip install -r requirements.txt && \
           python3.10 -m PyInstaller build.spec && \
-          mv \"dist/CursorFreeVIP_${{ env.VERSION }}_linux\" \"dist/CursorFreeVIP_${{ env.VERSION }}_linux_x64\"
+          mv \"/app/dist/CursorFreeVIP_${VERSION}_linux\" \"/app/dist/CursorFreeVIP_${VERSION}_linux_x64\"
         "
         echo "Contents of dist directory:"
         ls -la dist/
