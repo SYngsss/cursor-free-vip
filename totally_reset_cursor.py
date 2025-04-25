@@ -60,7 +60,7 @@ def get_cursor_paths(translator=None) -> Tuple[str, str]:
     default_paths = {
         "Darwin": "/Applications/Cursor.app/Contents/Resources/app",
         "Windows": os.path.join(os.getenv("LOCALAPPDATA", ""), "Programs", "Cursor", "resources", "app"),
-        "Linux": ["/opt/Cursor/resources/app", "/home/yupan/下载/squashfs-root/usr/share/cursor/resources/app", "/usr/share/cursor/resources/app", os.path.expanduser("~/.local/share/cursor/resources/app")]
+        "Linux": ["/opt/Cursor/usr/share/cursor/resources/app", "/opt/Cursor/resources/app", "/home/yupan/下载/squashfs-root/usr/share/cursor/resources/app", "/usr/share/cursor/resources/app", os.path.expanduser("~/.local/share/cursor/resources/app")]
     }
     
     if system == "Linux":
@@ -209,7 +209,7 @@ def get_workbench_cursor_path(translator=None) -> str:
             "main": "out\\vs\\workbench\\workbench.desktop.main.js"
         },
         "Linux": {
-            "bases": ["/opt/Cursor/resources/app", "/home/yupan/下载/squashfs-root/usr/share/cursor/resources/app", "/usr/share/cursor/resources/app"],
+            "bases": ["/opt/Cursor/usr/share/cursor/resources/app", "/opt/Cursor/resources/app", "/home/yupan/下载/squashfs-root/usr/share/cursor/resources/app", "/usr/share/cursor/resources/app"],
             "main": "out/vs/workbench/workbench.desktop.main.js"
         }
     }

@@ -181,6 +181,7 @@ def get_linux_cursor_path():
         "/opt/Cursor/resources/app",
         "/usr/share/cursor/resources/app",
         "/opt/cursor-bin/resources/app",
+        "/opt/Cursor/usr/share/cursor/resources/app",
         "/usr/lib/cursor/resources/app",
         "/home/yupan/下载/squashfs-root/usr/share/cursor/resources/app",
         os.path.expanduser("~/.local/share/cursor/resources/app")
